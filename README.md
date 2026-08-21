@@ -7,6 +7,8 @@
 
 **Live → https://baditaflorin.github.io/mesh-queue/**
 
+Watch the recorded two-peer walkthrough in the [mesh-common demo catalog](https://baditaflorin.github.io/mesh-common/demos/).
+
 ## What it does
 
 `mesh-queue` gives a small group one live, ordered line without a central queue service. Guests take a number, see their live position, and a single desk volunteer calls and completes the next guest. The desk claim expires automatically, so an abandoned tab does not block the room.
