@@ -1,6 +1,6 @@
 # mesh-queue
 
-[![live](https://img.shields.io/badge/live-mesh--queue-f97316)](https://baditaflorin.github.io/mesh-queue/)
+[![live](https://img.shields.io/badge/live-mesh--queue-7ea5ff)](https://baditaflorin.github.io/mesh-queue/)
 [![license](https://img.shields.io/badge/license-MIT-green)](./LICENSE)
 
 > A shared take-a-number queue that works directly between browsers.
@@ -13,7 +13,7 @@ Watch the recorded two-peer walkthrough in the [mesh-common demo catalog](https:
 
 `mesh-queue` gives a small group one live, ordered line without a central queue service. Guests take a number, see their live position, and a single desk volunteer calls and completes the next guest. The desk claim expires automatically, so an abandoned tab does not block the room.
 
-The queue is a browser-local Yjs document synchronized peer-to-peer with WebRTC. It uses mesh-common's `useNamedPeer`, `useRoster`, `useExpiringClaim`, `useDeadline`, `MeshNameInput`, settings drawer, invite flow, and self-reference chrome.
+The queue is a browser-local Yjs document synchronized peer-to-peer with WebRTC. It uses mesh-common's `useNamedPeer`, `useRoster`, `useExpiringClaim`, `useDeadline`, `MeshLaunch`, `MeshSurface`, `MeshButton`, `MeshPresence`, `MeshStatusPill`, `MeshNameInput`, and the shared invite/settings chrome.
 
 ## Use it
 
@@ -41,6 +41,7 @@ npm run dev
 npm run typecheck
 npm run smoke
 npm run test:e2e
+MESH_RUN_LEAK_TEST=1 MESH_LEAK_DURATION_MS=5000 npm run test:leak
 ```
 
 GitHub Pages serves the committed `docs/` directory from `main`. Repository validation is defined in `.woodpecker.yml`; no GitHub Actions workflow is used.
