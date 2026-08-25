@@ -19,20 +19,20 @@ describe("Feature (component)", () => {
     ]);
   });
 
-  it("renders the app name when connected", () => {
+  it("makes a new guest's place and next real action obvious", () => {
     const room = createMockRoom();
     render(<Feature room={room} config={config} />);
-    // Most apps show their human label in an <h1>. Allow either the config
-    // appName or any first-level heading to be present.
-    const heading = screen.getAllByRole("heading", { level: 1 })[0];
-    expect(heading).toBeInTheDocument();
+    expect(
+      screen.getByRole("heading", { level: 1, name: "A line that keeps moving." }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "Take a number" })).toBeEnabled();
+    expect(screen.getByRole("heading", { name: "Ready when you are" })).toBeInTheDocument();
+    expect(screen.getByRole("heading", { name: "Desk is ready" })).toBeInTheDocument();
   });
 
   it("shows a connecting state when room is null", () => {
     render(<Feature room={null} config={config} />);
-    // Most templates show "Connecting…" while the room is null. Apps with a
-    // custom waiting state can override this test.
-    const heading = screen.getAllByRole("heading", { level: 1 })[0];
-    expect(heading).toBeInTheDocument();
+    expect(screen.getByText("Connecting to the queue")).toBeDisabled();
+    expect(screen.getByText("Connecting")).toBeInTheDocument();
   });
 });
