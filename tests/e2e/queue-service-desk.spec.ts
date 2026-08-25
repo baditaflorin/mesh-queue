@@ -34,6 +34,26 @@ test("mobile service desk keeps the current place and next action in view", asyn
   );
 });
 
+test("short desktop keeps the primary service action in the first viewport", async ({ page }) => {
+  await page.setViewportSize({ width: 1141, height: 602 });
+  await page.goto("./", { waitUntil: "domcontentloaded" });
+  await closeInitiallyOpenSettings(page);
+
+  const primaryAction = page.getByRole("button", { name: "Take a number" });
+  await expect(page.getByRole("heading", { name: "A line that keeps moving." })).toBeVisible();
+  await expect(primaryAction).toBeEnabled();
+
+  const primaryActionBounds = await primaryAction.evaluate((element) => {
+    const { bottom, top } = element.getBoundingClientRect();
+    return { bottom, top, viewportHeight: window.innerHeight };
+  });
+  expect(primaryActionBounds.top).toBeGreaterThan(0);
+  expect(primaryActionBounds.bottom).toBeLessThanOrEqual(primaryActionBounds.viewportHeight);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+});
+
 test("a guest can take a number, run the desk, and call the next person", async ({ page }) => {
   await page.goto("./", { waitUntil: "domcontentloaded" });
   await closeInitiallyOpenSettings(page);
