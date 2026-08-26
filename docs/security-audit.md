@@ -1,17 +1,17 @@
 # Security audit — mesh-queue
 
-Generated: **2026-08-25T22:36:34.428Z** · 16 checks · 16 pass · 0 fail
+Generated: **2026-08-26T13:52:38.150Z** · 16 checks · 16 pass · 0 fail
 
-> A programmatic, CPU-only verification of every claim in the four-layer security stack.
+> A programmatic, CPU-only verification of shared security invariants and app-specific safety checks.
 > Re-run with `npm run audit:security` from this repo. Source: `mesh-common/tests/securityAudit.test.ts`
-> This app does not render the moderator badge yet — only the shared crypto invariants are exercised. The layer-1 guarantees still apply by virtue of bundling `mesh-common`.
+> This app has no app-specific UI audit yet — only the shared crypto invariants are exercised. The layer-1 guarantees still apply by virtue of bundling `mesh-common`.
 
 ## Result
 
 ✅ **All checks pass.**
 
 - crypto / Y.Doc invariants: **16 / 16**
-- UI-flow checks: **0** _(this app does not yet expose the moderator UI; pass 2 skipped)_
+- UI-flow checks: **0** _(no app-specific UI audit is present; pass 2 skipped)_
 
 ## Checks
 
@@ -42,8 +42,8 @@ Selected captured evidence (full payloads in `security-audit.json`):
 
 ```json
 {
-  "pubkeyA": "d9a87499b2aa845bcabb932900aad27b7ca8938fb8f53a5b5e82eb92f10ab7b8",
-  "pubkeyB": "d9a87499b2aa845bcabb932900aad27b7ca8938fb8f53a5b5e82eb92f10ab7b8"
+  "pubkeyA": "bb9b7eede24d678c8d5f2977e47e39f35c84e875c3b72c897c162f856373f671",
+  "pubkeyB": "bb9b7eede24d678c8d5f2977e47e39f35c84e875c3b72c897c162f856373f671"
 }
 ```
 
@@ -51,8 +51,8 @@ Selected captured evidence (full payloads in `security-audit.json`):
 
 ```json
 {
-  "pubkeyA": "5dfaf164ca03a98f",
-  "pubkeyB": "37642fde4faddca1"
+  "pubkeyA": "e5a190591d643733",
+  "pubkeyB": "9ea4a99ef5c1bcb1"
 }
 ```
 
@@ -69,8 +69,8 @@ Selected captured evidence (full payloads in `security-audit.json`):
 
 ```json
 {
-  "plantedExpiresAt": 1787697334421,
-  "now": 1787697394424
+  "plantedExpiresAt": 1787752298143,
+  "now": 1787752358146
 }
 ```
 
@@ -78,8 +78,8 @@ Selected captured evidence (full payloads in `security-audit.json`):
 
 ```json
 {
-  "realPubkey": "21c2ef8a44d4e7e8",
-  "forgerPubkey": "de6a342c3448beca"
+  "realPubkey": "a2548b54cff6bd42",
+  "forgerPubkey": "f3b9cf09d63e45db"
 }
 ```
 
@@ -97,7 +97,7 @@ Selected captured evidence (full payloads in `security-audit.json`):
 ```json
 {
   "sigLen": 128,
-  "pubkeyPrefix": "10453e71ac55df67"
+  "pubkeyPrefix": "3219345203ae9bdb"
 }
 ```
 
@@ -105,7 +105,7 @@ Selected captured evidence (full payloads in `security-audit.json`):
 
 ```json
 {
-  "fingerprint": "b8-39-3f-55"
+  "fingerprint": "3b-40-85-e6"
 }
 ```
 
@@ -113,7 +113,7 @@ Selected captured evidence (full payloads in `security-audit.json`):
 
 ```json
 {
-  "peerId": "b05fbc828ae1a11b"
+  "peerId": "501e9a60a9a28930"
 }
 ```
 
@@ -122,7 +122,7 @@ Selected captured evidence (full payloads in `security-audit.json`):
 ```json
 {
   "peerId": "alice",
-  "pubkeyPrefix": "1bf5a9d3c8b050c4",
+  "pubkeyPrefix": "cd1c36ad4e45bcf1",
   "sigLen": 128
 }
 ```
@@ -131,8 +131,8 @@ Selected captured evidence (full payloads in `security-audit.json`):
 
 ```json
 {
-  "forgedPubkey": "29c2cb956557ab45",
-  "realPubkey": "591542fc3b8ef1e4"
+  "forgedPubkey": "6b258392d609b1ae",
+  "realPubkey": "5cab3047ca4c2562"
 }
 ```
 
@@ -148,6 +148,6 @@ npm run audit:security
 The audit runs in two passes:
 
 1. **Crypto invariants** (Vitest, ~1s) — sign/verify roundtrips, TOFU registry, moderator role state machine, forged-claim rejection, expired-claim rejection. Uses in-memory Yjs mock rooms; no browser.
-2. **UI flow** (Playwright, ~5s) — opens two peer browsers, exercises the visible moderator badge: vacant → claim → sync → release.
+2. **UI flow** (Playwright, app-specific) — opens the browser scenario declared in `tests/e2e/security-audit.spec.ts` and verifies the app's own safety contract.
 
 Both run **headless, CPU-only**. No GPU acceleration is required; no signaling server is contacted. The fleet's `judge.sh` aggregator includes these checks alongside per-app feature tests.

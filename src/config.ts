@@ -2,6 +2,10 @@ import { createMeshConfig } from "@baditaflorin/mesh-common";
 
 export const config = createMeshConfig({
   appName: "mesh-queue",
+  breadcrumbs: {
+    ariaLabel: "Queue location",
+    items: [{ label: "Queue" }, { label: "Service desk" }],
+  },
   displayName: "Queue",
   visualProfile: "utility",
   shellLayout: "inset",
