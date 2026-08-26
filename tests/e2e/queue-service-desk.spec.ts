@@ -12,6 +12,25 @@ async function closeInitiallyOpenSettings(page: Page): Promise<void> {
   await expect(settings).toBeHidden();
 }
 
+test("location trail identifies the service desk without inventing navigation", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("./", { waitUntil: "domcontentloaded" });
+  await closeInitiallyOpenSettings(page);
+
+  const breadcrumbs = page.getByRole("navigation", { name: "Queue location" });
+  await expect(breadcrumbs).toBeVisible();
+  await expect(breadcrumbs.getByText("Queue", { exact: true })).toBeVisible();
+  await expect(breadcrumbs.locator('[aria-current="page"]')).toHaveText("Service desk");
+  await expect(breadcrumbs.getByRole("link")).toHaveCount(0);
+  await expect(breadcrumbs.getByRole("button")).toHaveCount(0);
+
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(
+    true,
+  );
+});
+
 test("mobile service desk keeps the current place and next action in view", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("./", { waitUntil: "domcontentloaded" });
